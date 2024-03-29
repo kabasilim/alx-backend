@@ -1,5 +1,11 @@
 # alx-backend
 
+![image](https://github.com/kabasilim/alx-backend/assets/77329878/675de4eb-67ee-42a4-adb7-0e816c8b7f10) ![image](https://github.com/kabasilim/alx-backend/assets/77329878/bece6dd4-25b6-4147-b781-ab0c6ce83896)
+![image](https://github.com/kabasilim/alx-backend/assets/77329878/646e1298-31d4-42e7-91c3-3d249e7c0fae)
+
+
+
+
 Pagination Helper Functions
 This repository contains helper functions and classes for pagination tasks.
 
