@@ -1,77 +1,159 @@
 # alx-backend
 
-![image](https://github.com/kabasilim/alx-backend/assets/77329878/675de4eb-67ee-42a4-adb7-0e816c8b7f10) ![image](https://github.com/kabasilim/alx-backend/assets/77329878/bece6dd4-25b6-4147-b781-ab0c6ce83896)
-![image](https://github.com/kabasilim/alx-backend/assets/77329878/646e1298-31d4-42e7-91c3-3d249e7c0fae)
+## 0x01-caching
 
+#### Base file
+```
+#!/usr/bin/python3
+""" BaseCaching module
+"""
 
+class BaseCaching():
+    """ BaseCaching defines:
+      - constants of your caching system
+      - where your data are stored (in a dictionary)
+    """
+    MAX_ITEMS = 4
 
+    def __init__(self):
+        """ Initiliaze
+        """
+        self.cache_data = {}
 
-Pagination Helper Functions
-This repository contains helper functions and classes for pagination tasks.
+    def print_cache(self):
+        """ Print the cache
+        """
+        print("Current cache:")
+        for key in sorted(self.cache_data.keys()):
+            print("{}: {}".format(key, self.cache_data.get(key)))
 
-0. Simple Helper Function
+    def put(self, key, item):
+        """ Add an item in the cache
+        """
+        raise NotImplementedError("put must be implemented in your cache class")
+
+    def get(self, key):
+        """ Get an item by key
+        """
+        raise NotImplementedError("get must be implemented in your cache class")
+```
+
+## Caching Systems
+This repository contains Python scripts implementing various caching systems:
+
+0. Basic Dictionary
 ### Description
-This module provides a simple helper function called index_range that takes two integer arguments: page and page_size. The function returns a tuple containing a start index and an end index corresponding to the range of indexes to return in a list for those particular pagination parameters. Note that page numbers are 1-indexed, meaning the first page is page 1.
-
+- Implements a basic caching system without any limits.
+- Inherits from ``BaseCaching``.
+- Provides ``put`` and ``get`` methods for adding and retrieving items from the cache.
 ### Usage
 ```
-from 0-simple_helper_function import index_range
+from 0-basic_cache import BasicCache
 
-res = index_range(1, 7)
-print(type(res))
-print(res)
-
-res = index_range(page=3, page_size=15)
-print(type(res))
-print(res)
+my_cache = BasicCache()
+my_cache.put("A", "Hello")
+my_cache.put("B", "World")
+my_cache.put("C", "Holberton")
+print(my_cache.get("A"))  # Output: Hello
+print(my_cache.get("B"))  # Output: World
+print(my_cache.get("C"))  # Output: Holberton
+print(my_cache.get("D"))  # Output: None
 ```
 
-
-1. Simple Pagination
+1. FIFO Caching
 ### Description
-This module contains a class called Server, which facilitates pagination of a dataset of popular baby names stored in a CSV file. It includes a method get_page that retrieves a specific page of the dataset based on provided page number and page size.
-
+- Implements a caching system using the First-In-First-Out (FIFO) algorithm.
+- Inherits from ``BaseCaching``.
+- Provides ``put`` and ``get`` methods.
+- Discards the oldest item if the cache limit is reached.
 ### Usage
 ```
-from 1-simple_pagination import Server
+from 1-fifo_cache import FIFOCache
 
-server = Server()
-
-# Examples of retrieving dataset pages
-print(server.get_page(1, 3))
-print(server.get_page(3, 2))
-print(server.get_page(3000, 100))
+my_cache = FIFOCache()
+my_cache.put("A", "Hello")
+my_cache.put("B", "World")
+my_cache.put("C", "Holberton")
+my_cache.put("D", "School")
+print(my_cache.get("A"))  # Output: Hello
+my_cache.put("E", "Battery")
 ```
 
-
-2. Hypermedia Pagination
+2. LIFO Caching
 ### Description
-Similar to the previous module, this module also contains a Server class but with an additional method get_hyper for hypermedia pagination. This method returns a dictionary containing pagination metadata along with the dataset page.
-
+- Implements a caching system using the Last-In-First-Out (LIFO) algorithm.
+- Inherits from ``BaseCaching``.
+- Provides ``put`` and ``get`` methods.
+- Discards the most recent item if the cache limit is reached.
 ### Usage
 ```
-from 2-hypermedia_pagination import Server
+from 2-lifo_cache import LIFOCache
 
-server = Server()
-
-# Examples of retrieving dataset pages with hypermedia pagination
-print(server.get_hyper(1, 2))
-print(server.get_hyper(2, 2))
-print(server.get_hyper(100, 3))
-print(server.get_hyper(3000, 100))
+my_cache = LIFOCache()
+my_cache.put("A", "Hello")
+my_cache.put("B", "World")
+my_cache.put("C", "Holberton")
+my_cache.put("D", "School")
+print(my_cache.get("A"))  # Output: Hello
+my_cache.put("E", "Battery")
 ```
 
-
-3. Deletion-Resilient Hypermedia Pagination
+3. LRU Caching
 ### Description
-This module extends the hypermedia pagination concept to handle cases where rows may be removed from the dataset between queries. It introduces a method get_hyper_index that takes into account potential deletions and ensures consistency in pagination.
-
+- Implements a caching system using the Least Recently Used (LRU) algorithm.
+- Inherits from ``BaseCaching``.
+- Provides ``put`` and ``get`` methods.
+- Discards the least recently used item if the cache limit is reached.
 ### Usage
 ```
-from 3-hypermedia_del_pagination import Server
+from 3-lru_cache import LRUCache
 
-server = Server()
-
-# Examples of retrieval with deletion-resilient hypermedia pagination
-print(server.get_hyper_index(3, 2))
+my_cache = LRUCache()
+my_cache.put("A", "Hello")
+my_cache.put("B", "World")
+my_cache.put("C", "Holberton")
+my_cache.put("D", "School")
+print(my_cache.get("B"))  # Output: World
+my_cache.put("E", "Battery")
 ```
+
+
+4. MRU Caching
+### Description
+- Implements a caching system using the Most Recently Used (MRU) algorithm.
+- Inherits from ``BaseCaching``.
+- Provides ``put`` and ``get`` methods.
+- Discards the most recently used item if the cache limit is reached.
+### Usage
+```
+from 4-mru_cache import MRUCache
+
+my_cache = MRUCache()
+my_cache.put("A", "Hello")
+my_cache.put("B", "World")
+my_cache.put("C", "Holberton")
+my_cache.put("D", "School")
+print(my_cache.get("B"))  # Output: World
+my_cache.put("E", "Battery")
+```
+
+
+5. LFU Caching
+### Description
+- Implements a caching system using the Least Frequently Used (LFU) algorithm.
+- Inherits from ``BaseCaching``.
+- Provides ``put`` and ``get`` methods.
+- Discards the least frequently used item if the cache limit is reached.
+### Usage
+```
+from 100-lfu_cache import LFUCache
+
+my_cache = LFUCache()
+my_cache.put("A", "Hello")
+my_cache.put("B", "World")
+my_cache.put("C", "Holberton")
+my_cache.put("D", "School")
+print(my_cache.get("B"))  # Output: World
+my_cache.put("E", "Battery")
+```
+
